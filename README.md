@@ -1,8 +1,14 @@
 ### Multi-Thread Flow Chart
 ![multithread](https://github.com/parkppjjmm/MultiThreadProject/assets/56201670/f26fed4f-6490-49bf-a5ae-112c4ffe719e)
+![image](https://github.com/parkppjjmm/MultiThreadProject/assets/56201670/5b38d1c8-0a22-4b26-bdc8-97775786036f)
+■ 때로는 영상처리에서 Time과 Accuracy 중 어떤 것이 더 중요한지 갈린다. 이번에 진행했던 영상처리의 경우 Time이 무조건적으로 중요했기 때문에 적당한 Accuracy를 유지하며, 무조건적으로 Time이 초당 10 frame을 처리할 수 있도록 설계하는 것이 중요했다.
 
+■ 이를 위해 CPU에선 Thread 처리 방법이 있었다. 기본적으로 프로그램은 위에서 아래로 Sequencial 방식으로 진행한다. 영상 처리를 수행하게 될 경우 2중 for loop가 여러 번 수행하게 될 것이고(이거는 빈번), 심할 경우 3중 for loop가 있을 수도 있다(이거는 최악!!).
 
-### C++ 멀티스레딩(multi-thread) 기본 개념: 세마포어(semaphore)와 while() loop를 사용한 프로세스 병렬 처리 이해하기
+■ 이럴 경우 초당 10 frame을 절대 수행하지 못하게 된다. 왜냐하면, 대표적으로 1920 by 1080 화면의 픽셀을 2중 for만 수행하는데 얼마나 많은 시간이 걸리겠는가? 상상만 해도 처리 후 나오는 이미지가 "버벅 버벅"할 것이다. 이를 보완하기 위해 Multi-Thread 개념을 도입하게 되었고, 전체 시스템을 부분 부분으로 나누어 각각의 Thread로 구성시켰다.
+
+### C++ 멀티스레딩(multi-thread) 기본 개념: 
+## 세마포어(semaphore)와 while() loop를 사용한 프로세스 병렬 처리 이해하기
 ![image](https://github.com/parkppjjmm/MultiThreadProject/assets/56201670/e0e85631-c14d-40ac-9056-b068c5079bac)
 멀티스레딩은 여러 실행 스레드가 단일 프로세스 내에서 동시에 실행될 수 있도록 하는 프로그래밍 개념입니다. 스레드는 프로세스 내에서 가장 작은 실행 단위이며 가볍고 독립적인 명령 시퀀스로 생각할 수 있습니다. 각 스레드는 자체 스택 및 프로그램 카운터를 갖지만 동일한 프로세스의 다른 스레드와 메모리 및 파일 핸들과 같은 동일한 주소 공간 및 리소스를 공유합니다.
 
