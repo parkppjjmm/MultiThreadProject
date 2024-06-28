@@ -114,13 +114,13 @@ It simulates a simple pipeline, where each thread performs some work and then si
 ### 코드 설명 (BasicThread_v0_1.cpp)
 이 코드는 Windows 세마포어를 사용하여 C++에서 세 개의 스레드를 동기화하는 방법을 보여줍니다. 각 스레드가 일부 작업을 수행한 다음 시작하도록 다음 스레드에 신호를 보내는 간단한 파이프라인을 시뮬레이트합니다. 코드를 단계별로 분석해 보겠습니다.
 
-▶ Header files and namespace:
+### ▶ Header files and namespace:
 코드에는 iostream, thread, Windows.h, stdlib.h, stdint.h, ctime, vector 및 stdio.h와 같은 필수 헤더 파일이 포함되어 있습니다. 또한 std 네임스페이스의 사용을 선언합니다.
 
-▶ Global variables:
+### ▶ Global variables:
 3개의 세마포어 핸들 sem1, sem2 및 sem3이 전역 변수로 정의됩니다. 스레드를 동기화하는 데 사용됩니다.
 
-▶ Thread functions:
+### ▶ Thread functions:
 
 ★ thread_1(): 이 함수는 100밀리초 동안 휴면하여 작업을 시뮬레이트합니다. 작업을 완료한 후 작업을 시작하기 위해 thread_2()에 신호를 보내기 위해 sem1을 해제합니다. 이 스레드는 사용자 입력이 "시작"인 동안 루프에서 계속 작동합니다.
  
@@ -129,7 +129,7 @@ It simulates a simple pipeline, where each thread performs some work and then si
 ★ thread_3(): thread_2()와 유사하게 이 함수는 작업을 수행하기 전에 thread_2()에 의해 sem2가 해제될 때까지 기다립니다(현재 비어 있지만 원하는 기능으로 확장할 수 있음).
  
 
-▶ Main function:
+### ▶ Main function:
 
 ★ Initializes semaphores: sem1과 sem2는 초기 카운트 0과 최대 카운트 1로 생성됩니다. 두 번째 세마포어인 sem2는 카운트 0으로 초기화되어 첫 번째 스레드가 신호를 보낼 때까지 두 번째 스레드가 대기하도록 합니다.
  
