@@ -1,3 +1,20 @@
+멀티스레딩과 관련된 몇 가지 주요 개념은 다음과 같습니다.
+
+동시성(Concurrency): 멀티스레딩을 사용하면 여러 스레드가 동시에 실행될 수 있습니다. 즉, 동시에 활성화됩니다. 동시성은 타임 슬라이싱(스레드에 단일 CPU 코어에서 실행할 수 있는 작은 시간 슬롯이 부여됨) 또는 진정한 병렬성(스레드가 여러 CPU 코어에서 동시에 실행됨)을 통해 달성할 수 있습니다.
+
+스레드 생성(Thread creation): 스레드는 C++ 표준 라이브러리의 <thread> 헤더 또는 Windows API와 같은 스레드 라이브러리 및 API를 사용하여 프로그래머가 명시적으로 생성할 수 있습니다.
+
+스레드 동기화(Thread synchronization): 다중 스레드 환경에서는 스레드가 조정되고 안전한 방식으로 공유 리소스에 액세스하는지 확인하는 것이 중요합니다. 뮤텍스, 세마포어 및 조건 변수와 같은 동기화 프리미티브를 사용하여 공유 리소스에 대한 액세스를 제어하고 스레드 실행을 조정할 수 있습니다.
+
+스레드 통신(Thread communication): 스레드는 공유 메모리, 메시지 전달 또는 기타 메커니즘을 통해 서로 통신할 수 있습니다. 이를 통해 데이터를 공유하고 이벤트에 신호를 보내거나 활동을 조정할 수 있습니다.
+
+스레드 종료(Thread termination): 스레드는 실행을 완료하거나 애플리케이션 또는 운영 체제에 의해 명시적으로 종료됨으로써 종료될 수 있습니다.
+
+멀티스레딩을 이해하고 효과적으로 사용함으로써 프로그래머는 보다 효율적이고 응답성이 뛰어나며 오늘날의 멀티코어 프로세서를 활용하는 데 더 적합한 애플리케이션을 개발할 수 있습니다.
+
+
+### 파일 이름 : BasicThread_v1.cpp 설명 링크 : https://easycode.tistory.com/26
+
 ### Multi-Thread Flow Chart
 ![multithread](https://github.com/parkppjjmm/MultiThreadProject/assets/56201670/f26fed4f-6490-49bf-a5ae-112c4ffe719e)
 ![image](https://github.com/parkppjjmm/MultiThreadProject/assets/56201670/5b38d1c8-0a22-4b26-bdc8-97775786036f)
@@ -9,7 +26,7 @@
 
 ## C++ 멀티스레딩(multi-thread) 기본 개념: (파일 이름 : BasicThread_v0_1.cpp)
 ### 세마포어(semaphore)와 while() loop를 사용한 프로세스 병렬 처리 이해하기
-### https://easycode.tistory.com/25
+### 링크 : https://easycode.tistory.com/25
 
 ![image](https://github.com/parkppjjmm/MultiThreadProject/assets/56201670/e0e85631-c14d-40ac-9056-b068c5079bac)
 
@@ -161,7 +178,7 @@ It simulates a simple pipeline, where each thread performs some work and then si
 
 ## C++ 멀티스레딩(multi-thread) 응용 개념: (파일 이름 : BasicThread_v0.cpp)
 ### 멀티쓰레드 속에 공유메모리 적용
-### https://easycode.tistory.com/23
+### 링크 : https://easycode.tistory.com/23
 
 공유 메모리는 여러 프로세스가 데이터를 읽고 쓰기 위해 공통 메모리 공간에 액세스하고 공유할 수 있도록 하는 IPC(프로세스 간 통신) 방법입니다.
 C++에서 공유 메모리는 다양한 라이브러리와 메커니즘을 사용하여 얻을 수 있습니다. 
