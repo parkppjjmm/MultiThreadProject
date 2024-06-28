@@ -27,39 +27,39 @@ It simulates a simple pipeline, where each thread performs some work and then si
 
 	HANDLE sem1, sem2, sem3;
 
-void thread_1() {
+	void thread_1() {
 
-	// local variable 
-	bool start;
-	string user_input;
-	clock_t start_time;
-	clock_t end_time;
+		// local variable 
+		bool start;
+		string user_input;
+		clock_t start_time;
+		clock_t end_time;
 
-	cout << "If you ready, enter 'start' in the cmd: ";
-	cin >> user_input;
+		cout << "If you ready, enter 'start' in the cmd: ";
+		cin >> user_input;
 
-	if (user_input == "start") {
-		start = true;
+		if (user_input == "start") {
+			start = true;
+		}
+		else
+		{
+			cout << "Invalid input. Please enter 'start' to run the other threads." << std::endl;
+		}
+
+		while (start)
+		{
+			start_time = clock();
+			this_thread::sleep_for(chrono::milliseconds(100)); // Sleep for 100 milliseconds to simulate work
+			/*
+			기능 추가
+			*/
+			end_time = clock();
+			printf("Thread_1 is worked......... Processed Time : %d......... \n", end_time - start_time);
+
+			ReleaseSemaphore(sem1, 1, NULL);
+		}
+
 	}
-	else
-	{
-		cout << "Invalid input. Please enter 'start' to run the other threads." << std::endl;
-	}
-
-	while (start)
-	{
-		start_time = clock();
-		this_thread::sleep_for(chrono::milliseconds(100)); // Sleep for 100 milliseconds to simulate work
-		/*
-		기능 추가
-		*/
-		end_time = clock();
-		printf("Thread_1 is worked......... Processed Time : %d......... \n", end_time - start_time);
-
-		ReleaseSemaphore(sem1, 1, NULL);
-	}
-
-}
 
 void thread_2() {
 	clock_t start_time;
