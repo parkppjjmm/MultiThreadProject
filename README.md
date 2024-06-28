@@ -143,3 +143,13 @@ It simulates a simple pipeline, where each thread performs some work and then si
 
 ### 결과
 ![image](https://github.com/parkppjjmm/MultiThreadProject/assets/56201670/c020993b-0709-4f28-abb1-16b32088bf59)
+
+
+
+
+
+######################
+
+
+
+
