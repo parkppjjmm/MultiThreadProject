@@ -7,8 +7,9 @@
 
 ■ 이럴 경우 초당 10 frame을 절대 수행하지 못하게 된다. 왜냐하면, 대표적으로 1920 by 1080 화면의 픽셀을 2중 for만 수행하는데 얼마나 많은 시간이 걸리겠는가? 상상만 해도 처리 후 나오는 이미지가 "버벅 버벅"할 것이다. 이를 보완하기 위해 Multi-Thread 개념을 도입하게 되었고, 전체 시스템을 부분 부분으로 나누어 각각의 Thread로 구성시켰다.
 
-## C++ 멀티스레딩(multi-thread) 기본 개념: 
+## C++ 멀티스레딩(multi-thread) 기본 개념: (파일 이름 : BasicThread_v0_1.cpp)
 ### 세마포어(semaphore)와 while() loop를 사용한 프로세스 병렬 처리 이해하기
+### https://easycode.tistory.com/25
 
 ![image](https://github.com/parkppjjmm/MultiThreadProject/assets/56201670/e0e85631-c14d-40ac-9056-b068c5079bac)
 
@@ -158,10 +159,86 @@ It simulates a simple pipeline, where each thread performs some work and then si
 
 
 
+## C++ 멀티스레딩(multi-thread) 응용 개념: (파일 이름 : BasicThread_v0.cpp)
+### 멀티쓰레드 속에 공유메모리 적용
+### https://easycode.tistory.com/23
+
+공유 메모리는 여러 프로세스가 데이터를 읽고 쓰기 위해 공통 메모리 공간에 액세스하고 공유할 수 있도록 하는 IPC(프로세스 간 통신) 방법입니다.
+C++에서 공유 메모리는 다양한 라이브러리와 메커니즘을 사용하여 얻을 수 있습니다. 
+여러 프로세스 또는 스레드가 함께 작업하여 문제를 해결하거나 작업을 보다 효율적으로 수행하는 병렬 프로그래밍에서 특히 유용합니다.
+
+▶ Windows shared memory:
+Windows는 메모리 매핑된 파일과 CreateFileMapping(), MapViewOfFile() 및 UnmapViewOfFile() 함수를 사용하여 고유한 공유 메모리 메커니즘을 제공합니다. 
+이를 통해 Windows에서 실행되는 프로세스 간에 공유 메모리를 생성하고 관리할 수 있습니다.
 
 
-######################
+### ■ 프로세스1: Shared memory: char-type data 
 
+	// Declare a HANDLE variable for the shared memory object
+	HANDLE HanValue1;
+	
+	// Open the shared memory object named "IPCValue1" with read and write access
+	HanValue1 = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, "IPCValue1");
+	
+	// Check if the shared memory object was opened successfully
+	if (HanValue1 == NULL) {
+	    // If not, print an error message and exit the program
+	    std::cout << currentDateTime() << " -- " << "Could not read HanValue1 : " << GetLastError() << std::endl;
+	    exit(0);
+	}
+	
+	// Map the shared memory object into the address space of the current process
+	char* chkValue1 = (char*)MapViewOfFile(HanValue1, FILE_MAP_WRITE, 0, 0, 0);
 
+### [코드 설명]
 
+이 코드는 Windows 시스템에서 공유 메모리를 사용하는 프로세스 간 통신(IPC)용입니다. 여기에는 OpenFileMapping() 및 MapViewOfFile()의 두 가지 주요 기능이 포함됩니다. 이 코드의 목적은 공유 메모리 개체를 열고 현재 프로세스의 주소 공간에 매핑하여 프로세스가 공유 메모리를 읽거나 수정할 수 있도록 하는 것입니다.
 
+▶ Declaration of HANDLE HanValue1 (HANDLE HanValue1 선언):
+HANDLE은 파일, 프로세스 또는 공유 메모리와 같은 운영 체제 리소스에 대한 "핸들"을 나타내는 Windows 데이터 유형입니다. 이 경우 파일 매핑 개체(공유 메모리)에 대한 핸들을 나타냅니다.
+
+▶ Opening the file mapping object (파일 매핑 개체 열기):
+OpenFileMapping() 함수는 FILE_MAP_ALL_ACCESS 액세스 권한이 있는 "IPCValue1"이라는 기존 공유 메모리 개체를 열기 위해 호출됩니다. 즉, 프로세스가 공유 메모리에 대한 읽기 및 쓰기 액세스 권한이 있음을 의미합니다. 함수가 실패하면 NULL을 반환하고 후속 오류 검사에서 오류 메시지를 인쇄하고 프로그램을 종료합니다.
+
+▶ Mapping the shared memory object into the process's address space (공유 메모리를 프로세스의 주소 공간에 매핑):
+MapViewOfFile() 함수는 공유 메모리 객체(HanValue1)를 현재 프로세스의 주소 공간에 매핑하기 위해 호출됩니다. 이 함수는 매핑된 보기의 시작 주소에 대한 포인터를 반환하고 코드 조각은 이 포인터를 char* chkValue1 변수에 저장합니다. 매핑이 성공하면 이제 chkValue1을 사용하여 공유 메모리에서 데이터를 읽고 쓸 수 있습니다.
+
+[관련 문서]
+
+https://learn.microsoft.com/ko-kr/windows/win32/memory/creating-named-shared-memory
+
+### □ 프로세스2: Shared memory: char-type data 
+
+	// Declare a HANDLE variable for the shared memory object
+	HANDLE HanValue1;
+	
+	// Create a new shared memory object named "IPCValue1" with read and write access and a size of 16 bytes
+	HanValue1 = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, sizeof(char) * 16, "IPCValue1");
+	
+	// Check if the shared memory object was created successfully
+	if (HanValue1 == NULL) {
+	    // If not, print an error message and exit the program
+	    std::cout << currentDateTime() << " -- " << "Could not read HanCoilID : " << GetLastError() << std::endl;
+	    exit(0);
+	}
+	
+	// Map the shared memory object into the address space of the current process
+	char* recvValue1 = (char*)MapViewOfFile(HanValue1, FILE_MAP_WRITE, 0, 0, 0);
+
+### [코드 설명]
+
+이 코드의 목적은 공유 메모리 개체를 만든 다음 현재 프로세스의 주소 공간에 매핑하여 프로세스가 공유 메모리를 읽거나 수정할 수 있도록 하는 것입니다.
+
+▶ Declaration of HANDLE HanValue1 (HANDLE HanValue1 선언):
+HANDLE은 파일, 프로세스 또는 공유 메모리와 같은 운영 체제 리소스에 대한 "핸들"을 나타내는 Windows 데이터 유형입니다. 이 경우 파일 매핑 개체(공유 메모리)에 대한 핸들을 나타냅니다.
+
+▶ Creating the file mapping object (파일 매핑 개체 만들기):
+CreateFileMapping() 함수는 PAGE_READWRITE 액세스 권한이 있는 "IPCValue1"이라는 새 공유 메모리 개체를 만들기 위해 호출됩니다. 즉, 공유 메모리를 읽고 쓸 수 있습니다. 공유 메모리의 크기는 sizeof(char) * 16으로 지정되며 각 문자는 1바이트의 메모리를 차지하므로 16바이트입니다. 함수가 실패하면 NULL을 반환하고 후속 오류 검사에서 오류 메시지를 인쇄하고 프로그램을 종료합니다.
+
+▶ Mapping the shared memory object into the process's address space (공유 메모리 프로세스의 주소 공간에 매핑):
+MapViewOfFile() 함수는 공유 메모리 객체(HanValue1)를 현재 프로세스의 주소 공간에 매핑하기 위해 호출됩니다. 이 함수는 매핑된 보기의 시작 주소에 대한 포인터를 반환하고 코드 조각은 이 포인터를 char* recvValue1 변수에 저장합니다. 매핑이 성공하면 이제 recvValue1을 사용하여 공유 메모리에 데이터를 읽고 쓸 수 있습니다.
+
+이 코드는 현재 프로세스가 공유 메모리 객체 "IPCValue1"을 생성 및 액세스하고 포인터 recvValue1을 사용하여 데이터를 읽거나 쓸 수 있도록 합니다. UnmapViewOfFile() 및 CloseHandle() 함수를 각각 사용하여 완료되면 공유 메모리를 올바르게 닫고 매핑 해제해야 합니다.
+
+[관련 문서]
+https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-createfilemappinga
