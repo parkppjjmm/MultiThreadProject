@@ -13,19 +13,19 @@ It simulates a simple pipeline, where each thread performs some work and then si
 */
 
 ###
-#include <iostream>
-#include <thread>
-#include <Windows.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <ctime>
-#include <vector>
-#include <stdio.h>
+	#include <iostream>
+	#include <thread>
+	#include <Windows.h>
+	#include <stdlib.h>
+	#include <stdint.h>
+	#include <ctime>
+	#include <vector>
+	#include <stdio.h>
 
 // namespace
-using namespace std;
+	using namespace std;
 
-HANDLE sem1, sem2, sem3;
+	HANDLE sem1, sem2, sem3;
 
 void thread_1() {
 
